@@ -351,6 +351,10 @@
         <svg class="ico"><use href="#i-check"/></svg>
         <div><b>Изменить данные</b><span>Заполнить форму заново</span></div>
       </button>
+            <button class="choice-btn" id="periodDeleteAny">
+        <svg class="ico"><use href="#i-trash"/></svg>
+        <div><b>Удалить этот цикл</b><span>Удалить отметку полностью (даже если он завершён)</span></div>
+      </button>
       <button class="choice-btn" id="periodDelete">
         <svg class="ico"><use href="#i-trash"/></svg>
         <div><b>Удалить отметку</b><span id="periodDeleteHint"></span></div>
@@ -650,14 +654,46 @@ let periodChoiceDate = null;
 let periodChoiceMode = null;
 
 function startAction(k){ 
-  // Проверяем, есть ли уже открытые месячные
   const open = state.periods.find(p=>!p.end);
   if (open) {
-    // Если начало уже стоит, предлагаем меню
     openPeriodChoice('start', k);
   } else {
     openPeriodModal('start', k);
   }
+}
+
+function endAction(k){ 
+  const open = state.periods.find(p=>!p.end);
+  if (!open) {
+    openPeriodModal('start', k);
+  } else {
+    openPeriodChoice('end', k);
+  }
+}
+
+function openPeriodChoice(mode, dateKey) {
+  periodChoiceDate = dateKey;
+  periodChoiceMode = mode;
+  
+  document.getElementById('periodChoiceDate').textContent = fmt(parse(dateKey));
+  
+  // Показываем или скрываем кнопку удаления
+  const deleteBtn = document.getElementById('periodDelete');
+  const deleteAnyBtn = document.getElementById('periodDeleteAny');
+  
+  if (mode === 'start') {
+    // Если нажали на "Начались" в день, где есть цикл
+    document.getElementById('periodDeleteHint').textContent = 'Удалить начало этого цикла';
+    deleteBtn.style.display = 'flex';
+    deleteAnyBtn.style.display = 'none';
+  } else {
+    // Если нажали на "Закончились"
+    document.getElementById('periodDeleteHint').textContent = 'Удалить дату окончания (цикл станет активным)';
+    deleteBtn.style.display = 'flex';
+    deleteAnyBtn.style.display = 'none';
+  }
+  
+  openOverlay('mPeriodChoice');
 }
 
 function endAction(k){ 
@@ -691,6 +727,18 @@ document.getElementById('periodEdit').onclick = () => {
   setTimeout(()=>openPeriodModal(periodChoiceMode, periodChoiceDate), 180);
 };
 
+  document.getElementById('periodDeleteAny').onclick = () => {
+  if (!confirm('Вы уверены, что хотите удалить этот цикл полностью?')) return;
+  const periodToDelete = state.periods.find(p => p.start === periodChoiceDate);
+  if (periodToDelete) {
+    state.periods = state.periods.filter(p => p !== periodToDelete);
+    save();
+    closeOverlay('mPeriodChoice');
+    confetti();
+    refreshAll();
+    haptic('medium');
+  }
+};
 document.getElementById('periodDelete').onclick = () => {
   if (!confirm('Вы уверены, что хотите удалить отметку?')) return;
   const open = state.periods.find(p=>!p.end);
