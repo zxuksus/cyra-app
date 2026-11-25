@@ -22,19 +22,44 @@
     --shadow-lg: 0 12px 40px rgba(232, 116, 140, 0.20);
     --ease: cubic-bezier(.22,.8,.3,1);
   }
+
+  /* ===== ТЕМНАЯ ТЕМА ===== */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1A1618;
+      --card: #262225;
+      --text: #F5EBEF;
+      --muted: #9E8A90;
+      --shadow: 0 6px 24px rgba(0,0,0,0.4);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.6);
+    }
+    .blob { opacity: 0.25; mix-blend-mode: screen; }
+    .bg-blobs { opacity: 0.6; }
+    textarea { background: #1F1B1D; border-color: #3D3438; }
+    .toggle-row, .choice-btn, .rec-item, .mood { background: #2E282B; }
+    .chip { background: #1F1B1D; border-color: #3D3438; }
+    .color-opt { border-color: #3D3438; }
+    .nav { background: rgba(26,22,24,0.85); border-top-color: rgba(244,182,194,0.15); }
+    .month-nav button { background: #2E282B; }
+    .day.today { box-shadow: inset 0 0 0 2px var(--accent); }
+    .compliment { background: linear-gradient(135deg, rgba(46,40,43,0.9), var(--card) 60%); border-color: rgba(244,182,194,0.1); }
+    .compliment::before { background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%); }
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; overflow: hidden; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: var(--text); background: var(--bg); display: flex; justify-content: center; position: relative;
+    transition: background 0.3s ease, color 0.3s ease;
   }
   .ico { width: 18px; height: 18px; display: inline-block; vertical-align: -3px; flex-shrink: 0; }
   .btn .ico { margin-right: 2px; }
 
   /* Живой фон */
-  .bg-blobs { position: fixed; inset: -20%; z-index: -1; overflow: hidden; filter: blur(55px); opacity: 0.8; pointer-events: none; animation: bgBreathe 8s ease-in-out infinite; }
+  .bg-blobs { position: fixed; inset: -20%; z-index: -1; overflow: hidden; filter: blur(55px); opacity: 0.8; pointer-events: none; animation: bgBreathe 8s ease-in-out infinite; transition: opacity 0.3s; }
   @keyframes bgBreathe { 0%,100% { opacity: 0.72; } 50% { opacity: 0.95; } }
-  .blob { position: absolute; width: 55vmax; height: 55vmax; border-radius: 50%; mix-blend-mode: multiply; }
+  .blob { position: absolute; width: 55vmax; height: 55vmax; border-radius: 50%; mix-blend-mode: multiply; transition: opacity 0.3s, mix-blend-mode 0.3s; }
   .blob.b1 { background: #FFC8D8; top: -10%; left: -10%; animation: float1 14s ease-in-out infinite; }
   .blob.b2 { background: #F9B8CC; bottom: -15%; right: -10%; animation: float2 18s ease-in-out infinite; }
   .blob.b3 { background: #FFDCE8; top: 30%; left: 40%; animation: float3 20s ease-in-out infinite; }
@@ -56,12 +81,12 @@
   header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
   header p { font-size: 13px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
 
-  .card { background: var(--card); border-radius: 24px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 14px; animation: cardIn 0.4s var(--ease) both; }
+  .card { background: var(--card); border-radius: 24px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 14px; animation: cardIn 0.4s var(--ease) both; transition: background 0.3s, box-shadow 0.3s; }
   @keyframes cardIn { from{opacity:0;transform:translateY(12px) scale(0.985);} to{opacity:1;transform:none;} }
 
   /* Комплимент */
-  .compliment { display: flex; align-items: center; gap: 14px; background: linear-gradient(135deg, #FFF0F4, #FFFFFF 60%); border: 1px solid rgba(244,182,194,0.5); padding: 16px 18px; animation: compIn 0.6s var(--ease) both, compFloat 5s ease-in-out infinite 0.6s; cursor: pointer; overflow: hidden; position: relative; }
-  .compliment::before { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%); transform: translateX(-100%); animation: shine 4.5s ease-in-out infinite 1.2s; }
+  .compliment { display: flex; align-items: center; gap: 14px; padding: 16px 18px; animation: compIn 0.6s var(--ease) both, compFloat 5s ease-in-out infinite 0.6s; cursor: pointer; overflow: hidden; position: relative; border: 1px solid rgba(244,182,194,0.5); }
+  .compliment::before { content: ''; position: absolute; inset: 0; transform: translateX(-100%); animation: shine 4.5s ease-in-out infinite 1.2s; }
   @keyframes shine { 0%,60%{transform:translateX(-100%);} 100%{transform:translateX(100%);} }
   @keyframes compIn { from{opacity:0;transform:translateY(-10px) scale(0.97);} to{opacity:1;transform:none;} }
   @keyframes compFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-3px);} }
@@ -93,11 +118,14 @@
   .btn.full { grid-column: 1 / -1; }
 
   /* Календарь */
-  .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-  .month-nav button { background: var(--bg); border: none; width: 38px; height: 38px; border-radius: 13px; font-size: 18px; color: var(--accent); cursor: pointer; transition: background 0.15s, transform 0.1s; }
+  .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; position: relative; }
+  .month-nav button { background: var(--bg); border: none; width: 38px; height: 38px; border-radius: 13px; font-size: 18px; color: var(--accent); cursor: pointer; transition: background 0.15s, transform 0.1s; display: flex; align-items: center; justify-content: center; }
   .month-nav button:active { transform: scale(0.9); }
   .month-nav .label { font-weight: 700; font-size: 15px; text-transform: capitalize; }
-  .weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .today-btn { position: absolute; left: 50%; transform: translateX(-50%); bottom: -22px; font-size: 11px; color: var(--accent); background: none; border: none; font-weight: 600; cursor: pointer; padding: 4px 8px; opacity: 0.8; transition: opacity 0.2s; }
+  .today-btn:active { opacity: 1; }
+  
+  .weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; }
   .weekdays div { text-align: center; font-size: 11px; color: var(--muted); padding-bottom: 6px; font-weight: 600; }
   .day { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 13px; cursor: pointer; position: relative; transition: transform 0.12s, background 0.18s, box-shadow 0.18s, outline-color 0.18s; user-select: none; outline: 2.5px solid transparent; outline-offset: 1px; }
   .day.appear { animation: dayIn 0.34s var(--ease) both; }
@@ -116,12 +144,14 @@
   .day.selected { outline-color: var(--accent); }
   .day .sex-hearts { position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); display: flex; gap: 1px; line-height: 1; }
   .day .sex-hearts .ico { width: 8px; height: 8px; color: var(--sex); }
+  .day .diary-dot { position: absolute; top: 4px; right: 4px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+  
   .legend { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-top: 16px; font-size: 11px; color: var(--muted); justify-content: center; }
   .legend span { display: flex; align-items: center; gap: 5px; }
   .legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
   /* Статистика */
-  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f8e6ea; }
+  .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(244,182,194,0.2); }
   .stat-row:last-child { border-bottom: none; }
   .stat-row .k { font-size: 13px; color: var(--muted); }
   .stat-row .v { font-size: 16px; font-weight: 700; color: var(--accent); }
@@ -131,7 +161,7 @@
   .bar span { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--muted); white-space: nowrap; }
 
   /* Навигация */
-  .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(244, 182, 194, 0.4); display: grid; grid-template-columns: repeat(3, 1fr); padding: 10px 8px 18px; z-index: 10; }
+  .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 420px; background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid rgba(244, 182, 194, 0.4); display: grid; grid-template-columns: repeat(3, 1fr); padding: 10px 8px 18px; z-index: 10; transition: background 0.3s, border-color 0.3s; }
   .nav button { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); padding: 6px 0; transition: color 0.18s, transform 0.15s; position: relative; }
   .nav button .ico { width: 22px; height: 22px; transition: transform 0.2s var(--ease); }
   .nav button.active { color: var(--accent); transform: translateY(-2px); }
@@ -140,12 +170,13 @@
   .hint { text-align: center; font-size: 12px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
 
   /* Модалки */
-  .overlay { position: fixed; inset: 0; z-index: 100; background: rgba(74, 63, 59, 0.28); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+  .overlay { position: fixed; inset: 0; z-index: 100; background: rgba(20, 15, 17, 0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
   .overlay.open { opacity: 1; pointer-events: auto; }
-  .sheet { width: 100%; max-width: 420px; background: var(--card); border-radius: 28px 28px 0 0; padding: 12px 20px 28px; max-height: 88vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.38s var(--ease); box-shadow: var(--shadow-lg); }
+  .sheet { width: 100%; max-width: 420px; background: var(--card); border-radius: 28px 28px 0 0; padding: 12px 20px 28px; max-height: 88vh; overflow-y: auto; transform: translateY(100%); transition: transform 0.38s var(--ease), background 0.3s; box-shadow: var(--shadow-lg); }
   .overlay.open .sheet { transform: none; }
   .sheet::-webkit-scrollbar { width: 0; }
   .handle { width: 40px; height: 5px; border-radius: 3px; background: #EFD5DC; margin: 0 auto 16px; }
+  @media (prefers-color-scheme: dark) { .handle { background: #4A3F43; } }
   .sheet h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
   .sheet .sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
   .field { margin-bottom: 20px; }
@@ -161,15 +192,16 @@
 
   /* Чипы */
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { border: 1.5px solid #F1DCE2; background: #fff; padding: 9px 14px; border-radius: 14px; font-size: 13px; color: var(--text); cursor: pointer; transition: all 0.18s var(--ease); user-select: none; }
+  .chip { border: 1.5px solid rgba(244,182,194,0.4); background: var(--card); padding: 9px 14px; border-radius: 14px; font-size: 13px; color: var(--text); cursor: pointer; transition: all 0.18s var(--ease); user-select: none; }
   .chip:active { transform: scale(0.95); }
   .chip.on { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; border-color: transparent; box-shadow: 0 4px 12px rgba(232,116,140,0.3); animation: chipPop 0.3s var(--ease); }
   @keyframes chipPop { 0%{transform:scale(0.9);} 60%{transform:scale(1.05);} 100%{transform:scale(1);} }
 
   /* Переключатель */
-  .toggle-row { display: flex; align-items: center; justify-content: space-between; background: #FFF7F9; border-radius: 16px; padding: 14px 16px; }
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; background: rgba(244,182,194,0.1); border-radius: 16px; padding: 14px 16px; }
   .toggle-row .t-label { font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
   .switch { position: relative; width: 50px; height: 28px; background: #EED6DD; border-radius: 14px; cursor: pointer; transition: background 0.22s; flex-shrink: 0; }
+  @media (prefers-color-scheme: dark) { .switch { background: #4A3F43; } }
   .switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: transform 0.28s var(--ease); }
   .switch.on { background: var(--accent); }
   .switch.on::after { transform: translateX(22px); }
@@ -182,27 +214,28 @@
 
   /* Котики */
   .moods { display: flex; gap: 8px; justify-content: space-between; }
-  .mood { flex: 1; aspect-ratio: 1/1; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #FFF7F9; color: var(--muted); transition: transform 0.18s var(--ease), background 0.18s, box-shadow 0.18s, color 0.18s; }
+  .mood { flex: 1; aspect-ratio: 1/1; border-radius: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(244,182,194,0.1); color: var(--muted); transition: transform 0.18s var(--ease), background 0.18s, box-shadow 0.18s, color 0.18s; }
   .mood .ico { width: 26px; height: 26px; }
   .mood:active { transform: scale(0.9); }
   .mood.on { background: var(--fertile); box-shadow: inset 0 0 0 2px var(--accent); color: var(--accent); transform: scale(1.06); animation: chipPop 0.3s var(--ease); }
+  @media (prefers-color-scheme: dark) { .mood.on { background: rgba(244,182,194,0.2); color: var(--accent); } }
 
-  textarea { width: 100%; border: 1.5px solid #F1DCE2; border-radius: 16px; padding: 12px 14px; font-family: inherit; font-size: 14px; resize: none; outline: none; color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; background: #FFFDFD; }
+  textarea { width: 100%; border: 1.5px solid rgba(244,182,194,0.4); border-radius: 16px; padding: 12px 14px; font-family: inherit; font-size: 14px; resize: none; outline: none; color: var(--text); transition: border-color 0.15s, box-shadow 0.15s, background 0.3s; background: var(--card); }
   textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,116,140,0.12); }
   .sheet-actions { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 8px; }
   .sheet-actions .btn { padding: 15px; }
 
   /* Меню выбора ПА */
   .choice-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
-  .choice-btn { display: flex; align-items: center; gap: 14px; background: #FFF7F9; border: 1.5px solid #F6E3E8; border-radius: 18px; padding: 14px 16px; cursor: pointer; text-align: left; transition: all 0.18s var(--ease); font-family: inherit; color: var(--text); }
-  .choice-btn:active { transform: scale(0.98); background: var(--fertile); }
+  .choice-btn { display: flex; align-items: center; gap: 14px; background: rgba(244,182,194,0.1); border: 1.5px solid rgba(244,182,194,0.2); border-radius: 18px; padding: 14px 16px; cursor: pointer; text-align: left; transition: all 0.18s var(--ease); font-family: inherit; color: var(--text); }
+  .choice-btn:active { transform: scale(0.98); background: rgba(244,182,194,0.2); }
   .choice-btn .ico { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; }
   .choice-btn div { display: flex; flex-direction: column; gap: 2px; }
   .choice-btn b { font-size: 14px; font-weight: 600; }
   .choice-btn span { font-size: 12px; color: var(--muted); }
 
   /* Список ПА */
-  .rec-item { background: #FFF7F9; border-radius: 16px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; animation: cardIn 0.3s var(--ease) both; }
+  .rec-item { background: rgba(244,182,194,0.1); border-radius: 16px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; animation: cardIn 0.3s var(--ease) both; }
   .rec-info { flex: 1; font-size: 13px; line-height: 1.55; }
   .rec-info b { color: var(--accent); }
   .rec-info .rec-note { color: var(--muted); font-size: 12px; margin-top: 4px; }
@@ -222,6 +255,10 @@
   @keyframes confFall { 0% { opacity: 1; transform: translateY(0) rotate(0) scale(0.5); } 30% { opacity: 1; transform: translateY(-80px) rotate(30deg) scale(1.1); } 100% { opacity: 0; transform: translateY(60vh) rotate(180deg) scale(0.6); } }
   .flash { animation: flash 0.5s ease; }
   @keyframes flash { 0% { box-shadow: var(--shadow); } 50% { box-shadow: 0 0 0 3px rgba(232,116,140,0.35), var(--shadow-lg); } 100% { box-shadow: var(--shadow); } }
+
+  /* Детали дня */
+  .day-event { display: flex; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 8px; background: rgba(244,182,194,0.1); padding: 10px 14px; border-radius: 12px; }
+  .day-event .ico { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -273,13 +310,17 @@
       <button class="btn ghost full" id="qSex"><svg class="ico"><use href="#i-heart"/></svg>Отметить половой акт</button>
       <button class="btn danger full" id="qEc"><svg class="ico"><use href="#i-pill"/></svg>Экстренная контрацепция</button>
     </div>
-    <div class="hint" id="todayHint"></div>
   </section>
 
   <section class="screen" id="screen-cal">
-    <header><h1>Календарь</h1><p>Нажми на день, затем выбери действие</p></header>
+    <header><h1>Календарь</h1><p>Нажми на день, чтобы открыть дневник</p></header>
     <div class="card">
-      <div class="month-nav"><button id="prev">‹</button><div class="label" id="monthLabel"></div><button id="next">›</button></div>
+      <div class="month-nav">
+        <button id="prev">‹</button>
+        <div class="label" id="monthLabel"></div>
+        <button id="next">›</button>
+        <button class="today-btn" id="btnToday">Сегодня</button>
+      </div>
       <div class="weekdays"><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div></div>
       <div class="grid" id="grid"></div>
       <div class="legend">
@@ -290,12 +331,6 @@
         <span><i style="background:var(--danger)"></i>Экстр. контрацепция</span>
       </div>
     </div>
-    <div class="quick">
-      <button class="btn primary" id="cStart"><svg class="ico"><use href="#i-drop"/></svg>Начались</button>
-      <button class="btn soft" id="cEnd"><svg class="ico"><use href="#i-check"/></svg>Закончились</button>
-      <button class="btn ghost full" id="cSex"><svg class="ico"><use href="#i-heart"/></svg>Отметить ПА</button>
-    </div>
-    <div class="hint" id="calHint"></div>
   </section>
 
   <section class="screen" id="screen-stats">
@@ -321,7 +356,40 @@
   </nav>
 </div>
 
-<!-- Модалки -->
+<!-- Модалка: Детали дня (Дневник) -->
+<div class="overlay" id="mDayDetails">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h2 id="dayDetailsTitle">Дневник дня</h2>
+    <div class="sub" id="dayDetailsSub"></div>
+    
+    <div id="dayEventsList" style="margin-bottom: 20px;"></div>
+
+    <div class="field">
+      <label>Настроение</label>
+      <div class="moods" id="dayMoods"></div>
+    </div>
+    
+    <div class="field">
+      <label>Заметка о самочувствии</label>
+      <textarea id="dayNote" rows="3" placeholder="Головная боль, усталость, витамины..."></textarea>
+    </div>
+
+    <div class="sheet-actions" style="margin-bottom: 10px;">
+      <button class="btn ghost" data-close>Отмена</button>
+      <button class="btn primary" id="daySave">Сохранить</button>
+    </div>
+
+    <div class="quick" style="margin-top: 15px;">
+      <button class="btn primary" id="dStart" style="padding: 12px; font-size: 13px;">Начались</button>
+      <button class="btn soft" id="dEnd" style="padding: 12px; font-size: 13px;">Закончились</button>
+      <button class="btn ghost full" id="dSex" style="padding: 12px; font-size: 13px;">Отметить ПА</button>
+      <button class="btn danger full" id="dEc" style="padding: 12px; font-size: 13px;">Экстр. контрацепция</button>
+    </div>
+  </div>
+</div>
+
+<!-- Остальные модалки -->
 <div class="overlay" id="mPeriod">
   <div class="sheet">
     <div class="handle"></div><h2 id="periodTitle">Начало менструации</h2><div class="sub" id="periodDate"></div>
@@ -346,18 +414,9 @@
     <h2>В этот день уже есть отметка</h2>
     <div class="sub" id="periodChoiceDate"></div>
     <div class="choice-list">
-      <button class="choice-btn" id="periodEdit">
-        <svg class="ico"><use href="#i-check"/></svg>
-        <div><b>Изменить данные</b><span>Заполнить форму заново</span></div>
-      </button>
-      <button class="choice-btn" id="periodDeleteAny">
-        <svg class="ico"><use href="#i-trash"/></svg>
-        <div><b>Удалить этот цикл</b><span>Удалить отметку полностью (даже если он завершён)</span></div>
-      </button>
-      <button class="choice-btn" id="periodDelete">
-        <svg class="ico"><use href="#i-trash"/></svg>
-        <div><b>Удалить отметку</b><span id="periodDeleteHint"></span></div>
-      </button>
+      <button class="choice-btn" id="periodEdit"><svg class="ico"><use href="#i-check"/></svg><div><b>Изменить данные</b><span>Заполнить форму заново</span></div></button>
+      <button class="choice-btn" id="periodDeleteAny"><svg class="ico"><use href="#i-trash"/></svg><div><b>Удалить этот цикл</b><span>Удалить отметку полностью (даже если он завершён)</span></div></button>
+      <button class="choice-btn" id="periodDelete"><svg class="ico"><use href="#i-trash"/></svg><div><b>Удалить отметку</b><span id="periodDeleteHint"></span></div></button>
     </div>
     <div class="sheet-actions"><button class="btn ghost" data-close>Закрыть</button></div>
   </div>
@@ -394,7 +453,7 @@
 <div class="overlay" id="mEc">
   <div class="sheet">
     <div class="handle"></div><h2>Экстренная контрацепция</h2><div class="sub" id="ecDate"></div>
-    <div class="field" style="background:#FFF0F3;border-radius:16px;padding:14px;font-size:13px;line-height:1.5;color:var(--muted)">Будет отмечена дата приёма. Напоминание: препараты экстренной контрацепции эффективны в первые 72 часа и не заменяют регулярную контрацепцию.</div>
+    <div class="field" style="background:rgba(244,182,194,0.1);border-radius:16px;padding:14px;font-size:13px;line-height:1.5;color:var(--muted)">Будет отмечена дата приёма. Напоминание: препараты экстренной контрацепции эффективны в первые 72 часа и не заменяют регулярную контрацепцию.</div>
     <div class="sheet-actions"><button class="btn ghost" data-close>Отмена</button><button class="btn danger" id="ecSave">Отметить</button></div>
   </div>
 </div>
@@ -432,13 +491,13 @@ function showCompliment(){
 }
 document.getElementById('complimentCard').addEventListener('click', showCompliment);
 
-const STORAGE_KEY = 'my_cycle_v5';
-const state = { periods: [], sex: [], ec: [], view: new Date(), selected: null, sexEditingId: null };
-let isDataModified = false; // Защита от перезаписи облаком
+const STORAGE_KEY = 'my_cycle_v5'; // Оставили v5 для совместимости со старыми данными
+const state = { periods: [], sex: [], ec: [], diary: {}, view: new Date(), selected: null, sexEditingId: null };
+let isDataModified = false;
 
 function save(){
   isDataModified = true;
-  const data = JSON.stringify({ periods: state.periods, sex: state.sex, ec: state.ec });
+  const data = JSON.stringify({ periods: state.periods, sex: state.sex, ec: state.ec, diary: state.diary });
   localStorage.setItem(STORAGE_KEY, data);
   if (window.Telegram?.WebApp?.CloudStorage) {
     const compressed = btoa(unescape(encodeURIComponent(data)));
@@ -451,7 +510,7 @@ function load(){
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const d = JSON.parse(raw);
-      state.periods = d.periods || []; state.sex = d.sex || []; state.ec = d.ec || [];
+      state.periods = d.periods || []; state.sex = d.sex || []; state.ec = d.ec || []; state.diary = d.diary || {};
     }
   } catch(e){}
   if (window.Telegram?.WebApp?.CloudStorage) {
@@ -460,7 +519,7 @@ function load(){
         try {
           const decoded = decodeURIComponent(escape(atob(cloudData)));
           const cd = JSON.parse(decoded);
-          state.periods = cd.periods || []; state.sex = cd.sex || []; state.ec = cd.ec || [];
+          state.periods = cd.periods || []; state.sex = cd.sex || []; state.ec = cd.ec || []; state.diary = cd.diary || {};
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cd));
           refreshAll();
         } catch(e){}
@@ -469,7 +528,6 @@ function load(){
   }
 }
 
-// Хелпер для поиска цикла по любой дате внутри него
 function getPeriodByDate(dateKey) {
   return state.periods.find(p => {
     const end = p.end || p.start;
@@ -518,13 +576,22 @@ function renderCalendar(){
       el.appendChild(heartsWrap);
     }
     if (state.ec.includes(key)) el.classList.add('ec');
+    if (state.diary[key] && (state.diary[key].note || state.diary[key].mood !== undefined)) {
+      const dot = document.createElement('div'); dot.className = 'diary-dot'; el.appendChild(dot);
+    }
     if (key===today) el.classList.add('today');
     if (key===state.selected) el.classList.add('selected');
-    el.onclick = () => { document.querySelectorAll('#grid .day.selected').forEach(x=>x.classList.remove('selected')); el.classList.add('selected'); state.selected = key; updateCalHint(); haptic('light'); };
+    
+    el.onclick = () => { 
+      document.querySelectorAll('#grid .day.selected').forEach(x=>x.classList.remove('selected')); 
+      el.classList.add('selected'); 
+      state.selected = key; 
+      openDayDetails(key); 
+      haptic('light'); 
+    };
     grid.appendChild(el);
   }
 }
-function updateCalHint(){ const el = document.getElementById('calHint'); if (!state.selected){ el.textContent='Нажми на день, затем выбери действие'; return; } const d = parse(state.selected); el.textContent = `Выбран: ${d.getDate()} ${MONTHS_GEN[d.getMonth()]}`; }
 
 function renderStats(){
   const closed = state.periods.filter(p=>p.end);
@@ -563,15 +630,71 @@ function showAdvice(meta){
 const COLOR_OPTS = [{ id:'light', hex:'#F7C6D2' }, { id:'red', hex:'#E8506B' }, { id:'dark', hex:'#A32645' }, { id:'brown', hex:'#8B5A4A' }];
 const MOOD_IDS = ['c1','c2','c3','c4','c5'];
 const periodState = { mode:'start', date:null, color:'red', pain:1, mood:2, well:3, note:'' };
+const dayState = { date: null, mood: undefined };
 
 function buildPeriodStaticUI(){
   const colors = document.getElementById('periodColors'); colors.innerHTML = '';
   COLOR_OPTS.forEach(c=>{ const el = document.createElement('div'); el.className = 'color-opt'; el.style.background = c.hex; el.dataset.id = c.id; el.onclick = () => { periodState.color = c.id; colors.querySelectorAll('.color-opt').forEach(o=>o.classList.remove('on')); el.classList.add('on'); haptic('light'); }; colors.appendChild(el); });
+  
   const moods = document.getElementById('periodMoods'); moods.innerHTML = '';
   MOOD_IDS.forEach((mid,i)=>{ const el = document.createElement('div'); el.className = 'mood'; el.innerHTML = `<svg class="ico"><use href="#${mid}"/></svg>`; el.onclick = () => { periodState.mood = i; moods.querySelectorAll('.mood').forEach(o=>o.classList.remove('on')); el.classList.add('on'); haptic('light'); }; moods.appendChild(el); });
+  
+  const dayMoods = document.getElementById('dayMoods'); dayMoods.innerHTML = '';
+  MOOD_IDS.forEach((mid,i)=>{ const el = document.createElement('div'); el.className = 'mood'; el.innerHTML = `<svg class="ico"><use href="#${mid}"/></svg>`; el.onclick = () => { dayState.mood = i; dayMoods.querySelectorAll('.mood').forEach(o=>o.classList.remove('on')); el.classList.add('on'); haptic('light'); }; dayMoods.appendChild(el); });
+
   document.getElementById('painRange').oninput = (e) => { periodState.pain = +e.target.value; document.getElementById('painVal').textContent = e.target.value; };
   document.getElementById('wellRange').oninput = (e) => { periodState.well = +e.target.value; document.getElementById('wellVal').textContent = e.target.value; };
 }
+
+// Дневник дня
+function openDayDetails(dateKey) {
+  dayState.date = dateKey;
+  const d = parse(dateKey);
+  document.getElementById('dayDetailsTitle').textContent = `Дневник: ${d.getDate()} ${MONTHS_GEN[d.getMonth()]}`;
+  
+  const p = getPeriodByDate(dateKey);
+  const s = sexRecordsByDate(dateKey);
+  const ec = state.ec.includes(dateKey);
+  
+  let subText = [];
+  if (p) subText.push('Менструация');
+  if (s.length) subText.push(`ПА (${s.length})`);
+  if (ec) subText.push('Экстренная контрацепция');
+  document.getElementById('dayDetailsSub').textContent = subText.length ? subText.join(' · ') : 'Нет событий';
+
+  const eventsList = document.getElementById('dayEventsList'); eventsList.innerHTML = '';
+  if (p) eventsList.innerHTML += `<div class="day-event"><svg class="ico"><use href="#i-drop"/></svg> Месячные${p.end ? ' (завершены)' : ' (идут)'}</div>`;
+  if (s.length) eventsList.innerHTML += `<div class="day-event"><svg class="ico"><use href="#i-heart"/></svg> ПА: ${s.length} шт.</div>`;
+  if (ec) eventsList.innerHTML += `<div class="day-event" style="color:var(--danger)"><svg class="ico" style="color:inherit"><use href="#i-pill"/></svg> Экстренная контрацепция</div>`;
+
+  const diaryEntry = state.diary[dateKey] || {};
+  document.getElementById('dayNote').value = diaryEntry.note || '';
+  dayState.mood = diaryEntry.mood;
+  
+  document.querySelectorAll('#dayMoods .mood').forEach((o,i)=>o.classList.toggle('on', i===dayState.mood));
+  
+  openOverlay('mDayDetails');
+}
+
+document.getElementById('daySave').onclick = () => {
+  const note = document.getElementById('dayNote').value.trim();
+  if (note || dayState.mood !== undefined) {
+    state.diary[dayState.date] = { note, mood: dayState.mood };
+  } else {
+    delete state.diary[dayState.date];
+  }
+  save();
+  closeOverlay('mDayDetails');
+  renderCalendar(); 
+  haptic('medium');
+};
+
+document.getElementById('dStart').onclick = () => { closeOverlay('mDayDetails'); setTimeout(()=>startAction(dayState.date), 200); };
+document.getElementById('dEnd').onclick = () => { closeOverlay('mDayDetails'); setTimeout(()=>endAction(dayState.date), 200); };
+document.getElementById('dSex').onclick = () => { closeOverlay('mDayDetails'); setTimeout(()=>sexAction(dayState.date), 200); };
+document.getElementById('dEc').onclick = () => { closeOverlay('mDayDetails'); setTimeout(()=>ecAction(dayState.date), 200); };
+
+document.getElementById('btnToday').onclick = () => { state.view = new Date(); renderCalendar(); haptic('light'); };
 
 function openPeriodModal(mode, dateKey){
   periodState.mode = mode; periodState.date = dateKey; periodState.color = 'red'; periodState.pain = 1; periodState.mood = 2; periodState.well = 3; periodState.note = '';
@@ -661,7 +784,6 @@ let ecDate = null;
 function openEcModal(dateKey){ ecDate = dateKey; document.getElementById('ecDate').textContent = fmt(parse(dateKey)); openOverlay('mEc'); }
 document.getElementById('ecSave').onclick = () => { if (!state.ec.includes(ecDate)) state.ec.push(ecDate); save(); closeOverlay('mEc'); confetti(); refreshAll(); };
 
-// Вспомогательные переменные для меню месячных
 let periodChoiceDate = null;
 let periodChoiceMode = null;
 
@@ -672,7 +794,6 @@ function startAction(k){
   } else {
     const open = state.periods.find(p=>!p.end);
     if (open) {
-       // Если уже есть активный цикл, но мы тыкаем на другой день, не даем создать второй активный
        alert("У вас есть незавершённый цикл. Сначала нажмите «Закончились» для него.");
     } else {
        openPeriodModal('start', k);
@@ -756,10 +877,6 @@ document.getElementById('qEnd').onclick   = () => endAction(todayKey());
 document.getElementById('qSex').onclick   = () => sexAction(todayKey());
 document.getElementById('qEc').onclick    = () => ecAction(todayKey());
 
-document.getElementById('cStart').onclick = () => { if(!state.selected) return; startAction(state.selected); };
-document.getElementById('cEnd').onclick   = () => { if(!state.selected) return; endAction(state.selected); };
-document.getElementById('cSex').onclick   = () => { if(!state.selected) return; sexAction(state.selected); };
-
 document.getElementById('prev').onclick = () => { state.view.setMonth(state.view.getMonth()-1); renderCalendar(); haptic('light'); };
 document.getElementById('next').onclick = () => { state.view.setMonth(state.view.getMonth()+1); renderCalendar(); haptic('light'); };
 
@@ -776,7 +893,7 @@ document.querySelectorAll('.nav button').forEach(btn=>{
   };
 });
 
-function refreshAll(){ renderToday(); renderCalendar(); renderStats(); updateCalHint(); }
+function refreshAll(){ renderToday(); renderCalendar(); renderStats(); }
 
 load(); 
 buildPeriodStaticUI();
