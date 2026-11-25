@@ -939,20 +939,64 @@ const state = {
 };
 
 function save(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+  const data = JSON.stringify({
     periods: state.periods, sex: state.sex, ec: state.ec
-  }));
+  });
+  // 1. Сохраняем локально (для браузера)
+  localStorage.setItem(STORAGE_KEY, data);
+  
+  // 2. Сохраняем в облако Telegram (если открыто в ТГ)
+  if (window.Telegram?.WebApp?.CloudStorage) {
+    Telegram.WebApp.CloudStorage.setItem(STORAGE_KEY, data, (err) => {
+      if (err) console.warn('Ошибка облака ТГ:', err);
+    });
+  }
 }
+
 function load(){
+  // Пытаемся загрузить локально
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
-    const d = JSON.parse(raw);
-    state.periods = d.periods || [];
-    state.sex = d.sex || [];
-    state.ec = d.ec || [];
-    return true;
-  } catch(e){ return false; }
+    if (raw) {
+      const d = JSON.parse(raw);
+      state.periods = d.periods || [];
+      state.sex = d.sex || [];
+      state.ec = d.ec || [];
+      // Если открыто в ТГ, попробуем взять из облака (если там новее)
+      if (window.Telegram?.WebApp?.CloudStorage) {
+        Telegram.WebApp.CloudStorage.getItem(STORAGE_KEY, (err, cloudData) => {
+          if (!err && cloudData && cloudData !== raw) {
+            try {
+              const cd = JSON.parse(cloudData);
+              state.periods = cd.periods || [];
+              state.sex = cd.sex || [];
+              state.ec = cd.ec || [];
+              save(); // синхронизируем локальное с облаком
+              refreshAll();
+            } catch(e){}
+          }
+        });
+      }
+      return true;
+    }
+  } catch(e){}
+  
+  // Если локально пусто, пытаемся взять из облака
+  if (window.Telegram?.WebApp?.CloudStorage) {
+    Telegram.WebApp.CloudStorage.getItem(STORAGE_KEY, (err, cloudData) => {
+      if (!err && cloudData) {
+        try {
+          const cd = JSON.parse(cloudData);
+          state.periods = cd.periods || [];
+          state.sex = cd.sex || [];
+          state.ec = cd.ec || [];
+          save();
+          refreshAll();
+        } catch(e){}
+      }
+    });
+  }
+  return false;
 }
 
 
