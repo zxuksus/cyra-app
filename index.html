@@ -340,7 +340,6 @@
     <div class="sheet-actions" style="grid-template-columns:1fr;margin-top:22px;"><button class="btn primary" data-close>Хорошо</button></div>
   </div>
 </div>
-  <!-- Модалка выбора действий с месячными -->
 <div class="overlay" id="mPeriodChoice">
   <div class="sheet">
     <div class="handle"></div>
@@ -351,7 +350,7 @@
         <svg class="ico"><use href="#i-check"/></svg>
         <div><b>Изменить данные</b><span>Заполнить форму заново</span></div>
       </button>
-            <button class="choice-btn" id="periodDeleteAny">
+      <button class="choice-btn" id="periodDeleteAny">
         <svg class="ico"><use href="#i-trash"/></svg>
         <div><b>Удалить этот цикл</b><span>Удалить отметку полностью (даже если он завершён)</span></div>
       </button>
@@ -384,6 +383,7 @@
   <div class="sheet">
     <div class="handle"></div><h2>Половой акт</h2><div class="sub" id="sexDate"></div>
     <div class="field"><div class="toggle-row"><span class="t-label"><svg class="ico"><use href="#i-shield"/></svg> Защищённый</span><div class="switch" id="protectedSwitch"></div></div></div>
+    <div class="field"><div class="toggle-row"><span class="t-label"><svg class="ico"><use href="#i-star"/></svg> Был оргазм</span><div class="switch" id="orgasmSwitch"></div></div></div>
     <div class="field"><label>Что было</label><div class="chips" id="sexPractices"></div></div>
     <div class="field"><label>Уровень желания</label><div class="slider-wrap"><input type="range" min="1" max="5" value="3" id="desireRange"><span class="slider-val" id="desireVal">3</span></div></div>
     <div class="field"><label>Оценка полового акта</label><div class="slider-wrap"><input type="range" min="1" max="5" value="3" id="rateRange"><span class="slider-val" id="rateVal">3</span></div></div>
@@ -434,8 +434,10 @@ document.getElementById('complimentCard').addEventListener('click', showComplime
 
 const STORAGE_KEY = 'my_cycle_v5';
 const state = { periods: [], sex: [], ec: [], view: new Date(), selected: null, sexEditingId: null };
+let isDataModified = false; // Защита от перезаписи облаком
 
 function save(){
+  isDataModified = true;
   const data = JSON.stringify({ periods: state.periods, sex: state.sex, ec: state.ec });
   localStorage.setItem(STORAGE_KEY, data);
   if (window.Telegram?.WebApp?.CloudStorage) {
@@ -454,7 +456,7 @@ function load(){
   } catch(e){}
   if (window.Telegram?.WebApp?.CloudStorage) {
     Telegram.WebApp.CloudStorage.getItem(STORAGE_KEY, (err, cloudData) => {
-      if (!err && cloudData) {
+      if (!err && cloudData && !isDataModified) {
         try {
           const decoded = decodeURIComponent(escape(atob(cloudData)));
           const cd = JSON.parse(decoded);
@@ -465,6 +467,14 @@ function load(){
       }
     });
   }
+}
+
+// Хелпер для поиска цикла по любой дате внутри него
+function getPeriodByDate(dateKey) {
+  return state.periods.find(p => {
+    const end = p.end || p.start;
+    return dateKey >= p.start && dateKey <= end;
+  });
 }
 
 function avgCycle(){ const closed = state.periods.filter(p=>p.end); if (closed.length < 2) return 28; const diffs = []; for (let i=1;i<closed.length;i++){ const d = Math.round((parse(closed[i].start) - parse(closed[i-1].start))/86400000); if (d>=15 && d<=60) diffs.push(d); } return diffs.length ? Math.round(diffs.reduce((a,b)=>a+b,0)/diffs.length) : 28; }
@@ -581,12 +591,13 @@ document.getElementById('periodSave').onclick = () => {
 };
 
 const PRACTICES = ['Ласки','Мастурбация','Оральный','Анальный','Вагинальный','Секс-игрушки'];
-const sexState = { date:null, protected:true, practices:[], desire:3, rate:3, note:'' };
-
+const sexState = { date:null, protected:true, orgasm:false, practices:[], desire:3, rate:3, note:'' };
+  
 function buildSexStaticUI(){
   const wrap = document.getElementById('sexPractices'); wrap.innerHTML = '';
   PRACTICES.forEach(p=>{ const el = document.createElement('div'); el.className='chip'; el.textContent=p; el.onclick = () => { const i = sexState.practices.indexOf(p); if (i>=0) sexState.practices.splice(i,1); else sexState.practices.push(p); el.classList.toggle('on'); haptic('light'); }; wrap.appendChild(el); });
   document.getElementById('protectedSwitch').onclick = (e) => { sexState.protected = !sexState.protected; e.target.classList.toggle('on', sexState.protected); haptic('light'); };
+  document.getElementById('orgasmSwitch').onclick = (e) => { sexState.orgasm = !sexState.orgasm; e.target.classList.toggle('on', sexState.orgasm); haptic('light'); };
   document.getElementById('desireRange').oninput = (e) => { sexState.desire = +e.target.value; document.getElementById('desireVal').textContent = e.target.value; };
   document.getElementById('rateRange').oninput = (e) => { sexState.rate = +e.target.value; document.getElementById('rateVal').textContent = e.target.value; };
 }
@@ -594,10 +605,11 @@ function buildSexStaticUI(){
 function openSexForm(dateKey, editId = null){
   sexState.date = dateKey; state.sexEditingId = editId;
   const existing = editId ? state.sex.find(s=>s.id===editId) : null;
-  if (existing){ sexState.protected = existing.protected; sexState.practices = [...existing.practices]; sexState.desire = existing.desire; sexState.rate = existing.rate; sexState.note = existing.note || ''; }
-  else { sexState.protected = true; sexState.practices = []; sexState.desire = 3; sexState.rate = 3; sexState.note = ''; }
+  if (existing){ sexState.protected = existing.protected; sexState.orgasm = existing.orgasm || false; sexState.practices = [...existing.practices]; sexState.desire = existing.desire; sexState.rate = existing.rate; sexState.note = existing.note || ''; }
+  else { sexState.protected = true; sexState.orgasm = false; sexState.practices = []; sexState.desire = 3; sexState.rate = 3; sexState.note = ''; }
   document.getElementById('sexDate').textContent = fmt(parse(dateKey));
   document.getElementById('protectedSwitch').classList.toggle('on', sexState.protected);
+  document.getElementById('orgasmSwitch').classList.toggle('on', sexState.orgasm);
   document.querySelectorAll('#sexPractices .chip').forEach(c=>{ c.classList.toggle('on', sexState.practices.includes(c.textContent)); });
   document.getElementById('desireRange').value = sexState.desire; document.getElementById('desireVal').textContent = sexState.desire;
   document.getElementById('rateRange').value = sexState.rate; document.getElementById('rateVal').textContent = sexState.rate;
@@ -607,7 +619,7 @@ function openSexForm(dateKey, editId = null){
 
 document.getElementById('sexSave').onclick = () => {
   sexState.note = document.getElementById('sexNote').value.trim();
-  const record = { id: state.sexEditingId || uid(), date: sexState.date, protected: sexState.protected, practices: [...sexState.practices], desire: sexState.desire, rate: sexState.rate, note: sexState.note };
+  const record = { id: state.sexEditingId || uid(), date: sexState.date, protected: sexState.protected, orgasm: sexState.orgasm, practices: [...sexState.practices], desire: sexState.desire, rate: sexState.rate, note: sexState.note };
   if (state.sexEditingId){ const i = state.sex.findIndex(s=>s.id===state.sexEditingId); if (i>=0) state.sex[i] = record; }
   else { state.sex.push(record); }
   state.sexEditingId = null; save(); closeOverlay('mSex'); confetti(); refreshAll();
@@ -637,7 +649,7 @@ function openSexList(dateKey){
     recs.forEach((rec, i)=>{
       const el = document.createElement('div'); el.className = 'rec-item';
       const practices = rec.practices.length ? rec.practices.join(', ') : 'не указано';
-      el.innerHTML = `<div class="rec-info"><div><b>Запись ${i+1}</b> · ${rec.protected ? 'защищённый' : 'без защиты'}</div><div>Практики: ${practices}</div><div>Желание: ${rec.desire}/5 · Оценка: ${rec.rate}/5</div>${rec.note ? `<div class="rec-note">${rec.note}</div>` : ''}</div><button class="rec-del" data-id="${rec.id}" title="Удалить"><svg class="ico"><use href="#i-trash"/></svg></button>`;
+      el.innerHTML = `<div class="rec-info"><div><b>Запись ${i+1}</b> · ${rec.protected ? 'защищённый' : 'без защиты'}</div><div>Практики: ${practices} ${rec.orgasm ? '· <b style="color:var(--accent)">Был оргазм</b>' : ''}</div><div>Желание: ${rec.desire}/5 · Оценка: ${rec.rate}/5</div>${rec.note ? `<div class="rec-note">${rec.note}</div>` : ''}</div><button class="rec-del" data-id="${rec.id}" title="Удалить"><svg class="ico"><use href="#i-trash"/></svg></button>`;
       body.appendChild(el);
     });
     body.querySelectorAll('.rec-del').forEach(btn=>{ btn.onclick = () => { if (!confirm('Удалить эту запись?')) return; state.sex = state.sex.filter(s=>s.id !== btn.dataset.id); save(); openSexList(dateKey); refreshAll(); }; });
@@ -654,82 +666,50 @@ let periodChoiceDate = null;
 let periodChoiceMode = null;
 
 function startAction(k){ 
-  const open = state.periods.find(p=>!p.end);
-  if (open) {
+  const existingPeriod = getPeriodByDate(k);
+  if (existingPeriod) {
     openPeriodChoice('start', k);
   } else {
-    openPeriodModal('start', k);
-  }
-}
-
-function endAction(k){ 
-  const open = state.periods.find(p=>!p.end);
-  if (!open) {
-    // Если месячных вообще нет, открываем форму начала
-    openPeriodModal('start', k);
-  } else {
-    // Проверяем, попадает ли выбранный день в текущий цикл
-    const isAlreadyMarked = k >= open.start && (k <= (open.end || k));
-    
-    if (isAlreadyMarked) {
-      // Если день уже закрашен — показываем меню (изменить или удалить)
-      openPeriodChoice('end', k);
+    const open = state.periods.find(p=>!p.end);
+    if (open) {
+       // Если уже есть активный цикл, но мы тыкаем на другой день, не даем создать второй активный
+       alert("У вас есть незавершённый цикл. Сначала нажмите «Закончились» для него.");
     } else {
-      // Если день пустой — просто ставим конец
-      openPeriodModal('end', k);
+       openPeriodModal('start', k);
     }
   }
 }
 
-  function sexAction(k){ handleSexAction(k); }
-function openPeriodChoice(mode, dateKey) {
-  periodChoiceDate = dateKey;
-  periodChoiceMode = mode;
-  
-  document.getElementById('periodChoiceDate').textContent = fmt(parse(dateKey));
-  
-  // Показываем или скрываем кнопку удаления
-  const deleteBtn = document.getElementById('periodDelete');
-  const deleteAnyBtn = document.getElementById('periodDeleteAny');
-  
-  if (mode === 'start') {
-    // Если нажали на "Начались" в день, где есть цикл
-    document.getElementById('periodDeleteHint').textContent = 'Удалить начало этого цикла';
-    deleteBtn.style.display = 'flex';
-    deleteAnyBtn.style.display = 'none';
-  } else {
-    // Если нажали на "Закончились"
-    document.getElementById('periodDeleteHint').textContent = 'Удалить дату окончания (цикл станет активным)';
-    deleteBtn.style.display = 'flex';
-    deleteAnyBtn.style.display = 'none';
-  }
-  
-  openOverlay('mPeriodChoice');
-}
-
 function endAction(k){ 
-  const open = state.periods.find(p=>!p.end);
-  if (!open) {
-    // Если месячных нет, то и заканчивать нечего — открываем форму начала
-    openPeriodModal('start', k);
-  } else {
-    // Если месячные идут, предлагаем выбрать: изменить или удалить
+  const existingPeriod = getPeriodByDate(k);
+  if (existingPeriod) {
     openPeriodChoice('end', k);
+  } else {
+    const open = state.periods.find(p=>!p.end);
+    if (open) {
+      openPeriodModal('end', k);
+    } else {
+      openPeriodModal('start', k); 
+    }
   }
 }
+
+function sexAction(k){ handleSexAction(k); }
 
 function openPeriodChoice(mode, dateKey) {
   periodChoiceDate = dateKey;
   periodChoiceMode = mode;
-  const open = state.periods.find(p=>!p.end);
   
   document.getElementById('periodChoiceDate').textContent = fmt(parse(dateKey));
   
   if (mode === 'start') {
-    document.getElementById('periodDeleteHint').textContent = 'Удалить весь цикл целиком (начало и конец)';
+    document.getElementById('periodDeleteHint').textContent = 'Удалить начало этого цикла';
   } else {
-    document.getElementById('periodDeleteHint').textContent = 'Удалить только дату окончания (цикл станет активным)';
+    document.getElementById('periodDeleteHint').textContent = 'Удалить дату окончания (цикл станет активным)';
   }
+  document.getElementById('periodDelete').style.display = 'flex';
+  document.getElementById('periodDeleteAny').style.display = 'flex';
+  
   openOverlay('mPeriodChoice');
 }
 
@@ -738,9 +718,9 @@ document.getElementById('periodEdit').onclick = () => {
   setTimeout(()=>openPeriodModal(periodChoiceMode, periodChoiceDate), 180);
 };
 
-  document.getElementById('periodDeleteAny').onclick = () => {
+document.getElementById('periodDeleteAny').onclick = () => {
   if (!confirm('Вы уверены, что хотите удалить этот цикл полностью?')) return;
-  const periodToDelete = state.periods.find(p => p.start === periodChoiceDate);
+  const periodToDelete = getPeriodByDate(periodChoiceDate);
   if (periodToDelete) {
     state.periods = state.periods.filter(p => p !== periodToDelete);
     save();
@@ -750,17 +730,18 @@ document.getElementById('periodEdit').onclick = () => {
     haptic('medium');
   }
 };
+
 document.getElementById('periodDelete').onclick = () => {
   if (!confirm('Вы уверены, что хотите удалить отметку?')) return;
-  const open = state.periods.find(p=>!p.end);
+  const periodToEdit = getPeriodByDate(periodChoiceDate);
   
-  if (periodChoiceMode === 'start' && open) {
-    // Удаляем весь цикл
-    state.periods = state.periods.filter(p => p !== open);
-  } else if (periodChoiceMode === 'end' && open) {
-    // Удаляем только конец (цикл снова становится открытым)
-    open.end = null;
-    open.endMeta = null;
+  if (periodToEdit) {
+    if (periodChoiceMode === 'start') {
+      state.periods = state.periods.filter(p => p !== periodToEdit);
+    } else if (periodChoiceMode === 'end') {
+      periodToEdit.end = null;
+      periodToEdit.endMeta = null;
+    }
   }
   
   save();
@@ -797,7 +778,7 @@ document.querySelectorAll('.nav button').forEach(btn=>{
 
 function refreshAll(){ renderToday(); renderCalendar(); renderStats(); updateCalHint(); }
 
-load(); // ВАЖНО: загружаем перед отрисовкой
+load(); 
 buildPeriodStaticUI();
 buildSexStaticUI();
 refreshAll();
