@@ -340,6 +340,25 @@
     <div class="sheet-actions" style="grid-template-columns:1fr;margin-top:22px;"><button class="btn primary" data-close>Хорошо</button></div>
   </div>
 </div>
+  <!-- Модалка выбора действий с месячными -->
+<div class="overlay" id="mPeriodChoice">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h2>В этот день уже есть отметка</h2>
+    <div class="sub" id="periodChoiceDate"></div>
+    <div class="choice-list">
+      <button class="choice-btn" id="periodEdit">
+        <svg class="ico"><use href="#i-check"/></svg>
+        <div><b>Изменить данные</b><span>Заполнить форму заново</span></div>
+      </button>
+      <button class="choice-btn" id="periodDelete">
+        <svg class="ico"><use href="#i-trash"/></svg>
+        <div><b>Удалить отметку</b><span id="periodDeleteHint"></span></div>
+      </button>
+    </div>
+    <div class="sheet-actions"><button class="btn ghost" data-close>Закрыть</button></div>
+  </div>
+</div>
 <div class="overlay" id="mSexChoice">
   <div class="sheet">
     <div class="handle"></div><h2>В этот день уже есть ПА</h2><div class="sub" id="sexChoiceDate"></div>
@@ -626,10 +645,71 @@ let ecDate = null;
 function openEcModal(dateKey){ ecDate = dateKey; document.getElementById('ecDate').textContent = fmt(parse(dateKey)); openOverlay('mEc'); }
 document.getElementById('ecSave').onclick = () => { if (!state.ec.includes(ecDate)) state.ec.push(ecDate); save(); closeOverlay('mEc'); confetti(); refreshAll(); };
 
-function startAction(k){ openPeriodModal('start', k); }
-function endAction(k){ openPeriodModal('end', k); }
-function sexAction(k){ handleSexAction(k); }
-function ecAction(k){ openEcModal(k); }
+// Вспомогательные переменные для меню месячных
+let periodChoiceDate = null;
+let periodChoiceMode = null;
+
+function startAction(k){ 
+  // Проверяем, есть ли уже открытые месячные
+  const open = state.periods.find(p=>!p.end);
+  if (open) {
+    // Если начало уже стоит, предлагаем меню
+    openPeriodChoice('start', k);
+  } else {
+    openPeriodModal('start', k);
+  }
+}
+
+function endAction(k){ 
+  const open = state.periods.find(p=>!p.end);
+  if (!open) {
+    // Если месячных нет, то и заканчивать нечего — открываем форму начала
+    openPeriodModal('start', k);
+  } else {
+    // Если месячные идут, предлагаем выбрать: изменить или удалить
+    openPeriodChoice('end', k);
+  }
+}
+
+function openPeriodChoice(mode, dateKey) {
+  periodChoiceDate = dateKey;
+  periodChoiceMode = mode;
+  const open = state.periods.find(p=>!p.end);
+  
+  document.getElementById('periodChoiceDate').textContent = fmt(parse(dateKey));
+  
+  if (mode === 'start') {
+    document.getElementById('periodDeleteHint').textContent = 'Удалить весь цикл целиком (начало и конец)';
+  } else {
+    document.getElementById('periodDeleteHint').textContent = 'Удалить только дату окончания (цикл станет активным)';
+  }
+  openOverlay('mPeriodChoice');
+}
+
+document.getElementById('periodEdit').onclick = () => {
+  closeOverlay('mPeriodChoice');
+  setTimeout(()=>openPeriodModal(periodChoiceMode, periodChoiceDate), 180);
+};
+
+document.getElementById('periodDelete').onclick = () => {
+  if (!confirm('Вы уверены, что хотите удалить отметку?')) return;
+  const open = state.periods.find(p=>!p.end);
+  
+  if (periodChoiceMode === 'start' && open) {
+    // Удаляем весь цикл
+    state.periods = state.periods.filter(p => p !== open);
+  } else if (periodChoiceMode === 'end' && open) {
+    // Удаляем только конец (цикл снова становится открытым)
+    open.end = null;
+    open.endMeta = null;
+  }
+  
+  save();
+  closeOverlay('mPeriodChoice');
+  confetti();
+  refreshAll();
+  haptic('medium');
+};
 
 document.getElementById('qStart').onclick = () => startAction(todayKey());
 document.getElementById('qEnd').onclick   = () => endAction(todayKey());
