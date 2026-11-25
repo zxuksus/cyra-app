@@ -40,7 +40,7 @@
     .chip { background: #1F1B1D; border-color: #3D3438; }
     .color-opt { border-color: #3D3438; }
     .nav { background: rgba(26,22,24,0.85); border-top-color: rgba(244,182,194,0.15); }
-    .month-nav button { background: #2E282B; }
+    .month-nav button, .today-btn { background: #2E282B; }
     .day.today { box-shadow: inset 0 0 0 2px var(--accent); }
     .compliment { background: linear-gradient(135deg, rgba(46,40,43,0.9), var(--card) 60%); border-color: rgba(244,182,194,0.1); }
     .compliment::before { background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%); }
@@ -118,14 +118,16 @@
   .btn.full { grid-column: 1 / -1; }
 
   /* Календарь */
-  .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; position: relative; }
+  .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
   .month-nav button { background: var(--bg); border: none; width: 38px; height: 38px; border-radius: 13px; font-size: 18px; color: var(--accent); cursor: pointer; transition: background 0.15s, transform 0.1s; display: flex; align-items: center; justify-content: center; }
   .month-nav button:active { transform: scale(0.9); }
   .month-nav .label { font-weight: 700; font-size: 15px; text-transform: capitalize; }
-  .today-btn { position: absolute; left: 50%; transform: translateX(-50%); bottom: -22px; font-size: 11px; color: var(--accent); background: none; border: none; font-weight: 600; cursor: pointer; padding: 4px 8px; opacity: 0.8; transition: opacity 0.2s; }
-  .today-btn:active { opacity: 1; }
   
-  .weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 10px; }
+  .today-wrap { display: flex; justify-content: center; margin-bottom: 14px; }
+  .today-btn { font-size: 11px; color: var(--accent); background: var(--bg); border: none; font-weight: 600; cursor: pointer; padding: 6px 16px; border-radius: 12px; transition: background 0.15s, opacity 0.2s, transform 0.1s; }
+  .today-btn:active { background: var(--primary); color: #fff; transform: scale(0.95); }
+  
+  .weekdays, .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
   .weekdays div { text-align: center; font-size: 11px; color: var(--muted); padding-bottom: 6px; font-weight: 600; }
   .day { aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; font-size: 13px; border-radius: 13px; cursor: pointer; position: relative; transition: transform 0.12s, background 0.18s, box-shadow 0.18s, outline-color 0.18s; user-select: none; outline: 2.5px solid transparent; outline-offset: 1px; }
   .day.appear { animation: dayIn 0.34s var(--ease) both; }
@@ -319,7 +321,9 @@
         <button id="prev">‹</button>
         <div class="label" id="monthLabel"></div>
         <button id="next">›</button>
-        <button class="today-btn" id="btnToday">Сегодня</button>
+      </div>
+      <div class="today-wrap">
+        <button class="today-btn" id="btnToday">К сегодняшнему дню</button>
       </div>
       <div class="weekdays"><div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div></div>
       <div class="grid" id="grid"></div>
@@ -491,7 +495,7 @@ function showCompliment(){
 }
 document.getElementById('complimentCard').addEventListener('click', showCompliment);
 
-const STORAGE_KEY = 'my_cycle_v5'; // Оставили v5 для совместимости со старыми данными
+const STORAGE_KEY = 'my_cycle_v5';
 const state = { periods: [], sex: [], ec: [], diary: {}, view: new Date(), selected: null, sexEditingId: null };
 let isDataModified = false;
 
