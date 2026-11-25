@@ -665,9 +665,19 @@ function startAction(k){
 function endAction(k){ 
   const open = state.periods.find(p=>!p.end);
   if (!open) {
+    // Если месячных вообще нет, открываем форму начала
     openPeriodModal('start', k);
   } else {
-    openPeriodChoice('end', k);
+    // Проверяем, попадает ли выбранный день в текущий цикл
+    const isAlreadyMarked = k >= open.start && (k <= (open.end || k));
+    
+    if (isAlreadyMarked) {
+      // Если день уже закрашен — показываем меню (изменить или удалить)
+      openPeriodChoice('end', k);
+    } else {
+      // Если день пустой — просто ставим конец
+      openPeriodModal('end', k);
+    }
   }
 }
 
