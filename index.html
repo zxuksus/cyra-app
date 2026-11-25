@@ -955,20 +955,6 @@ function load(){
   } catch(e){ return false; }
 }
 
-(function seed(){
-  if (load()) return;
-  const t = new Date();
-  const s1 = new Date(t.getTime() - 56*86400000);
-  const e1 = new Date(s1.getTime() + 4*86400000);
-  const s2 = new Date(t.getTime() - 28*86400000);
-  const e2 = new Date(s2.getTime() + 5*86400000);
-  state.periods.push(
-    { start: iso(s1), end: iso(e1), startMeta: null, endMeta: null },
-    { start: iso(s2), end: iso(e2), startMeta: null, endMeta: null }
-  );
-  state.sex.push({ id: uid(), date: iso(new Date(t.getTime() - 10*86400000)), protected: true, practices: ['ласки'], desire: 4, rate: 4, note: '' });
-  save();
-})();
 
 /* =========================================================
    Прогноз
