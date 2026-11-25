@@ -492,7 +492,7 @@ function renderCalendar(){
   for (let d=1; d<=daysInMonth; d++){
     const key = iso(new Date(y,m,d)); const el = document.createElement('div'); el.className='day appear'; el.textContent = d;
     let isActualPeriod = false;
-    for (const p of state.periods){ const end = p.end || today; if (key >= p.start && key <= end){ el.classList.add('period'); isActualPeriod = true; break; } }
+    for (const p of state.periods){ const end = p.end || p.start; if (key >= p.start && key <= end){ el.classList.add('period'); isActualPeriod = true; break; } }
     if (!isActualPeriod && f) {
       const nextStartK = iso(f.next); const nextEndK = iso(new Date(f.next.getTime() + (avgPeriod()-1)*86400000));
       if (key >= nextStartK && key <= nextEndK) { el.classList.add('period-forecast'); }
