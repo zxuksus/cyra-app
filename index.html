@@ -4,340 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Cyra</title>
-<!-- ЧАСТЬ 2 (CSS) ВСТАВИТЬ СЮДА -->
-</head>
-<body>
-
-<!-- SVG-СПРАЙТ -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <symbol id="i-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3c3.5 4.2 6 7.6 6 10.6A6 6 0 0 1 6 13.6C6 10.6 8.5 7.2 12 3z"/>
-    </symbol>
-    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="9"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/>
-    </symbol>
-    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 20s-7-4.4-7-9.2A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.8C19 15.6 12 20 12 20z"/>
-    </symbol>
-    <symbol id="i-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3.5" y="8.5" width="17" height="7" rx="3.5" transform="rotate(-35 12 12)"/>
-      <path d="M9.2 8.1l5.6 7.8"/>
-    </symbol>
-    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3l7 2.5v5.2c0 4.6-3 8-7 10.3-4-2.3-7-5.7-7-10.3V5.5L12 3z"/>
-      <path d="M9 12l2.2 2.2L15.5 10"/>
-    </symbol>
-    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="4"/>
-      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/>
-    </symbol>
-    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3.5" y="5" width="17" height="15.5" rx="3"/>
-      <path d="M3.5 9.5h17M8 3v4M16 3v4"/>
-      <circle cx="8" cy="13" r="1"/><circle cx="12" cy="13" r="1"/><circle cx="16" cy="13" r="1"/>
-    </symbol>
-    <symbol id="i-stats" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
-    </symbol>
-    <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9L12 3.5z"/>
-    </symbol>
-    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 7h16M9 7V4.5h6V7M6 7l1 13h10l1-13M10 11v6M14 11v6"/>
-    </symbol>
-    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-      <path d="M12 5v14M5 12h14"/>
-    </symbol>
-    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-      <path d="M6 6l12 12M18 6L6 18"/>
-    </symbol>
-    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/>
-    </symbol>
-  </defs>
-</svg>
-
-<!-- Настроение: КОТИКИ (5 разных выражений) -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <defs>
-    <!-- 1: грустный котик -->
-    <symbol id="c1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
-      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
-      <path d="M8.5 10.5c.6-.5 1.4-.5 2 0M13.5 10.5c.6-.5 1.4-.5 2 0"/>
-      <path d="M10.5 16.5c.5-.8 1.3-1.2 1.5-1.2s1 .4 1.5 1.2"/>
-      <path d="M12 14.2v1"/>
-    </symbol>
-    <!-- 2: задумчивый котик -->
-    <symbol id="c2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
-      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
-      <path d="M8.5 10.5h1.5M13.5 10.5h1.5"/>
-      <path d="M10 16.3c.5-.3 1.2-.4 2-.4s1.5.1 2 .4"/>
-      <path d="M12 14.2v1"/>
-    </symbol>
-    <!-- 3: нейтральный котик -->
-    <symbol id="c3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
-      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
-      <path d="M9 11h.01M15 11h.01"/>
-      <path d="M10.5 16h3"/>
-      <path d="M12 14.2v1"/>
-    </symbol>
-    <!-- 4: улыбающийся котик -->
-    <symbol id="c4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
-      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
-      <path d="M8.5 10.8c.5.4 1.2.4 1.7 0M13.8 10.8c.5.4 1.2.4 1.7 0"/>
-      <path d="M9.5 15.2c.6 1 1.6 1.6 2.5 1.6s1.9-.6 2.5-1.6"/>
-      <path d="M12 14.2v1"/>
-    </symbol>
-    <!-- 5: очень радостный котик -->
-    <symbol id="c5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
-      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
-      <path d="M8 11c.6-.9 1.4-1.1 2-.5M14 10.5c.6-.6 1.4-.4 2 .5"/>
-      <path d="M9.3 14.8c.6 1.4 1.6 2 2.7 2s2.1-.6 2.7-2"/>
-      <path d="M12 14.2v1"/>
-      <path d="M18 6l.6 1.4L20 8l-1.4.6L18 10l-.6-1.4L16 8l1.4-.6z"/>
-    </symbol>
-  </defs>
-</svg>
-
-<!-- Анимированный фон -->
-<div class="bg-blobs">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-  <div class="blob b4"></div>
-</div>
-
-<div id="confetti" class="confetti"></div>
-
-<div class="app">
-  <!-- Экран 1 -->
-  <section class="screen active" id="screen-today">
-    <header><h1>Cyra</h1><p id="todayDate"></p></header>
-    <div class="card compliment" id="complimentCard" hidden>
-      <div class="comp-ico"><svg class="ico"><use href="#i-star"/></svg></div>
-      <div class="comp-text" id="complimentText"></div>
-    </div>
-    <div class="card hero">
-      <div class="label">До следующих месячных</div>
-      <div class="big" id="heroDays">—</div>
-      <div class="sub" id="heroSub">отметь начало цикла</div>
-      <div class="note" id="heroNote"></div>
-    </div>
-    <div class="quick">
-      <button class="btn primary" id="qStart"><svg class="ico"><use href="#i-drop"/></svg>Начались</button>
-      <button class="btn soft" id="qEnd"><svg class="ico"><use href="#i-check"/></svg>Закончились</button>
-      <button class="btn ghost full" id="qSex"><svg class="ico"><use href="#i-heart"/></svg>Отметить половой акт</button>
-      <button class="btn danger full" id="qEc"><svg class="ico"><use href="#i-pill"/></svg>Экстренная контрацепция</button>
-    </div>
-    <div class="hint" id="todayHint"></div>
-  </section>
-
-  <!-- Экран 2 -->
-  <section class="screen" id="screen-cal">
-    <header><h1>Календарь</h1><p>Нажми на день, затем выбери действие</p></header>
-    <div class="card">
-      <div class="month-nav">
-        <button id="prev">‹</button>
-        <div class="label" id="monthLabel"></div>
-        <button id="next">›</button>
-      </div>
-      <div class="weekdays">
-        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
-      </div>
-      <div class="grid" id="grid"></div>
-      <div class="legend">
-        <span><i style="background:var(--period)"></i>Менструация</span>
-        <span><i style="background:var(--ovulation)"></i>Овуляция</span>
-        <span><i style="background:var(--fertile);border:1px solid #f0c6d2"></i>Фертильные</span>
-        <span><i style="background:var(--sex)"></i>ПА</span>
-        <span><i style="background:var(--danger)"></i>Экстр. контрацепция</span>
-      </div>
-    </div>
-    <div class="quick">
-      <button class="btn primary" id="cStart"><svg class="ico"><use href="#i-drop"/></svg>Начались</button>
-      <button class="btn soft" id="cEnd"><svg class="ico"><use href="#i-check"/></svg>Закончились</button>
-      <button class="btn ghost full" id="cSex"><svg class="ico"><use href="#i-heart"/></svg>Отметить ПА</button>
-    </div>
-    <div class="hint" id="calHint"></div>
-  </section>
-
-  <!-- Экран 3 -->
-  <section class="screen" id="screen-stats">
-    <header><h1>Статистика</h1><p>Твой цикл в цифрах</p></header>
-    <div class="card">
-      <div class="stat-row"><span class="k">Средняя длина цикла</span><span class="v" id="sCycle">—</span></div>
-      <div class="stat-row"><span class="k">Средняя длительность месячных</span><span class="v" id="sPeriod">—</span></div>
-      <div class="stat-row"><span class="k">Циклов отмечено</span><span class="v" id="sCount">0</span></div>
-      <div class="stat-row"><span class="k">Следующая менструация</span><span class="v" id="sNext">—</span></div>
-      <div class="stat-row"><span class="k">Отметок ПА</span><span class="v" id="sSex">0</span></div>
-      <div class="stat-row"><span class="k">Экстренная контрацепция</span><span class="v" id="sEc">0</span></div>
-    </div>
-    <div class="card">
-      <div class="k" style="font-size:13px;color:var(--muted);margin-bottom:12px;">Длина последних циклов (дней)</div>
-      <div class="bars" id="bars"></div>
-      <div style="height:22px"></div>
-    </div>
-  </section>
-
-  <nav class="nav">
-    <button data-screen="today" class="active"><svg class="ico"><use href="#i-sun"/></svg>Сегодня</button>
-    <button data-screen="cal"><svg class="ico"><use href="#i-cal"/></svg>Календарь</button>
-    <button data-screen="stats"><svg class="ico"><use href="#i-stats"/></svg>Статистика</button>
-  </nav>
-</div>
-
-<!-- Модалка: Менструация -->
-<div class="overlay" id="mPeriod">
-  <div class="sheet">
-    <div class="handle"></div>
-    <h2 id="periodTitle">Начало менструации</h2>
-    <div class="sub" id="periodDate"></div>
-
-    <div class="field">
-      <label>Цвет месячных</label>
-      <div class="colors" id="periodColors"></div>
-    </div>
-    <div class="field">
-      <label>Уровень боли</label>
-      <div class="slider-wrap">
-        <input type="range" min="1" max="5" value="1" id="painRange">
-        <span class="slider-val" id="painVal">1</span>
-      </div>
-    </div>
-    <div class="field">
-      <label>Настроение</label>
-      <div class="moods" id="periodMoods"></div>
-    </div>
-    <div class="field">
-      <label>Общее самочувствие</label>
-      <div class="slider-wrap">
-        <input type="range" min="1" max="5" value="3" id="wellRange">
-        <span class="slider-val" id="wellVal">3</span>
-      </div>
-    </div>
-    <div class="field">
-      <label>Заметка (необязательно)</label>
-      <textarea id="periodNote" rows="2" placeholder="Например: сильная слабость утром..."></textarea>
-    </div>
-    <div class="sheet-actions">
-      <button class="btn ghost" data-close>Отмена</button>
-      <button class="btn primary" id="periodSave">Сохранить</button>
-    </div>
-  </div>
-</div>
-
-<!-- Модалка: совет / комплимент после месячных -->
-<div class="overlay" id="mAdvice">
-  <div class="sheet" style="text-align:center;padding-bottom:32px;">
-    <div class="handle"></div>
-    <div class="advice-ico" id="adviceIco"><svg class="ico"><use href="#i-info"/></svg></div>
-    <h2 id="adviceTitle" style="margin-top:6px;"></h2>
-    <div class="sub" id="adviceText" style="font-size:14px;line-height:1.6;margin-top:8px;"></div>
-    <div class="sheet-actions" style="grid-template-columns:1fr;margin-top:22px;">
-      <button class="btn primary" data-close>Хорошо</button>
-    </div>
-  </div>
-</div>
-
-<!-- Модалка выбора ПА -->
-<div class="overlay" id="mSexChoice">
-  <div class="sheet">
-    <div class="handle"></div>
-    <h2>В этот день уже есть ПА</h2>
-    <div class="sub" id="sexChoiceDate"></div>
-    <div class="choice-list">
-      <button class="choice-btn" id="sexAddMore">
-        <svg class="ico"><use href="#i-plus"/></svg>
-        <div><b>Добавить ещё один</b><span>Отметить ещё один половой акт в этот день</span></div>
-      </button>
-      <button class="choice-btn" id="sexRemoveLast">
-        <svg class="ico"><use href="#i-trash"/></svg>
-        <div><b>Отменить предыдущий</b><span id="sexRemoveHint"></span></div>
-      </button>
-      <button class="choice-btn" id="sexShowAll">
-        <svg class="ico"><use href="#i-heart"/></svg>
-        <div><b>Показать все за день</b><span id="sexCountHint"></span></div>
-      </button>
-    </div>
-    <div class="sheet-actions"><button class="btn ghost" data-close>Закрыть</button></div>
-  </div>
-</div>
-
-<!-- Модалка: список ПА -->
-<div class="overlay" id="mSexList">
-  <div class="sheet">
-    <div class="handle"></div>
-    <h2>Записи ПА за день</h2>
-    <div class="sub" id="sexListDate"></div>
-    <div id="sexListBody"></div>
-    <div class="sheet-actions"><button class="btn ghost" data-close>Закрыть</button></div>
-  </div>
-</div>
-
-<!-- Модалка: ПА -->
-<div class="overlay" id="mSex">
-  <div class="sheet">
-    <div class="handle"></div>
-    <h2>Половой акт</h2>
-    <div class="sub" id="sexDate"></div>
-
-    <div class="field">
-      <div class="toggle-row">
-        <span class="t-label"><svg class="ico"><use href="#i-shield"/></svg> Защищённый</span>
-        <div class="switch" id="protectedSwitch"></div>
-      </div>
-    </div>
-    <div class="field">
-      <label>Что было</label>
-      <div class="chips" id="sexPractices"></div>
-    </div>
-    <div class="field">
-      <label>Уровень желания</label>
-      <div class="slider-wrap">
-        <input type="range" min="1" max="5" value="3" id="desireRange">
-        <span class="slider-val" id="desireVal">3</span>
-      </div>
-    </div>
-    <div class="field">
-      <label>Оценка полового акта</label>
-      <div class="slider-wrap">
-        <input type="range" min="1" max="5" value="3" id="rateRange">
-        <span class="slider-val" id="rateVal">3</span>
-      </div>
-    </div>
-    <div class="field">
-      <label>Заметка (необязательно)</label>
-      <textarea id="sexNote" rows="2" placeholder="Любые детали..."></textarea>
-    </div>
-    <div class="sheet-actions">
-      <button class="btn ghost" data-close>Отмена</button>
-      <button class="btn primary" id="sexSave">Сохранить</button>
-    </div>
-  </div>
-</div>
-
-<!-- Модалка: Экстренная контрацепция -->
-<div class="overlay" id="mEc">
-  <div class="sheet">
-    <div class="handle"></div>
-    <h2>Экстренная контрацепция</h2>
-    <div class="sub" id="ecDate"></div>
-    <div class="field" style="background:#FFF0F3;border-radius:16px;padding:14px;font-size:13px;line-height:1.5;color:var(--muted)">
-      Будет отмечена дата приёма. Напоминание: препараты экстренной контрацепции эффективны в первые 72 часа и не заменяют регулярную контрацепцию.
-    </div>
-    <div class="sheet-actions">
-      <button class="btn ghost" data-close>Отмена</button>
-      <button class="btn danger" id="ecSave">Отметить</button>
-    </div>
-  </div>
-</div>
-
 <style>
   :root {
     --bg: #FFF5F7;
@@ -359,7 +25,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body {
     height: 100%;
-    overflow: hidden; /* Запрещаем скролл самому браузеру */
+    overflow: hidden;
   }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -410,13 +76,13 @@
   /* ===== Каркас ===== */
   .app {
     width: 100%; max-width: 420px;
-    height: 100dvh; /* Высота ровно по экрану */
+    height: 100dvh;
     display: flex; flex-direction: column;
-    padding: 22px 16px 0; /* Убираем огромный отступ снизу */
+    padding: 22px 16px 0;
     position: relative;
     z-index: 1;
-    overflow-y: auto; /* Скроллиться будет только контент */
-    padding-bottom: 130px; /* Оставляем место под меню */
+    overflow-y: auto;
+    padding-bottom: 130px;
   }
 
   .screen { display: none; flex: 1; }
@@ -841,6 +507,334 @@
     100% { box-shadow: var(--shadow); }
   }
 </style>
+</head>
+<body>
+
+<!-- SVG-СПРАЙТ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3c3.5 4.2 6 7.6 6 10.6A6 6 0 0 1 6 13.6C6 10.6 8.5 7.2 12 3z"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/><path d="M8.5 12.2l2.4 2.4 4.8-5"/>
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 20s-7-4.4-7-9.2A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.8C19 15.6 12 20 12 20z"/>
+    </symbol>
+    <symbol id="i-pill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.5" y="8.5" width="17" height="7" rx="3.5" transform="rotate(-35 12 12)"/>
+      <path d="M9.2 8.1l5.6 7.8"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l7 2.5v5.2c0 4.6-3 8-7 10.3-4-2.3-7-5.7-7-10.3V5.5L12 3z"/>
+      <path d="M9 12l2.2 2.2L15.5 10"/>
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.4 1.4M17.6 17.6L19 19M19 5l-1.4 1.4M6.4 17.6L5 19"/>
+    </symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.5" y="5" width="17" height="15.5" rx="3"/>
+      <path d="M3.5 9.5h17M8 3v4M16 3v4"/>
+      <circle cx="8" cy="13" r="1"/><circle cx="12" cy="13" r="1"/><circle cx="16" cy="13" r="1"/>
+    </symbol>
+    <symbol id="i-stats" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9L12 3.5z"/>
+    </symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 7h16M9 7V4.5h6V7M6 7l1 13h10l1-13M10 11v6M14 11v6"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M12 5v14M5 12h14"/>
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M6 6l12 12M18 6L6 18"/>
+    </symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Настроение: КОТИКИ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="c1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
+      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
+      <path d="M8.5 10.5c.6-.5 1.4-.5 2 0M13.5 10.5c.6-.5 1.4-.5 2 0"/>
+      <path d="M10.5 16.5c.5-.8 1.3-1.2 1.5-1.2s1 .4 1.5 1.2"/>
+      <path d="M12 14.2v1"/>
+    </symbol>
+    <symbol id="c2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
+      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
+      <path d="M8.5 10.5h1.5M13.5 10.5h1.5"/>
+      <path d="M10 16.3c.5-.3 1.2-.4 2-.4s1.5.1 2 .4"/>
+      <path d="M12 14.2v1"/>
+    </symbol>
+    <symbol id="c3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
+      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
+      <path d="M9 11h.01M15 11h.01"/>
+      <path d="M10.5 16h3"/>
+      <path d="M12 14.2v1"/>
+    </symbol>
+    <symbol id="c4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
+      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
+      <path d="M8.5 10.8c.5.4 1.2.4 1.7 0M13.8 10.8c.5.4 1.2.4 1.7 0"/>
+      <path d="M9.5 15.2c.6 1 1.6 1.6 2.5 1.6s1.9-.6 2.5-1.6"/>
+      <path d="M12 14.2v1"/>
+    </symbol>
+    <symbol id="c5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 9l2-3 3 1.5M20 9l-2-3-3 1.5"/>
+      <ellipse cx="12" cy="13" rx="7.5" ry="6.5"/>
+      <path d="M8 11c.6-.9 1.4-1.1 2-.5M14 10.5c.6-.6 1.4-.4 2 .5"/>
+      <path d="M9.3 14.8c.6 1.4 1.6 2 2.7 2s2.1-.6 2.7-2"/>
+      <path d="M12 14.2v1"/>
+      <path d="M18 6l.6 1.4L20 8l-1.4.6L18 10l-.6-1.4L16 8l1.4-.6z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Анимированный фон -->
+<div class="bg-blobs">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+
+<div id="confetti" class="confetti"></div>
+
+<div class="app">
+  <!-- Экран 1 -->
+  <section class="screen active" id="screen-today">
+    <header><h1>Cyra</h1><p id="todayDate"></p></header>
+    <div class="card compliment" id="complimentCard" hidden>
+      <div class="comp-ico"><svg class="ico"><use href="#i-star"/></svg></div>
+      <div class="comp-text" id="complimentText"></div>
+    </div>
+    <div class="card hero">
+      <div class="label">До следующих месячных</div>
+      <div class="big" id="heroDays">—</div>
+      <div class="sub" id="heroSub">отметь начало цикла</div>
+      <div class="note" id="heroNote"></div>
+    </div>
+    <div class="quick">
+      <button class="btn primary" id="qStart"><svg class="ico"><use href="#i-drop"/></svg>Начались</button>
+      <button class="btn soft" id="qEnd"><svg class="ico"><use href="#i-check"/></svg>Закончились</button>
+      <button class="btn ghost full" id="qSex"><svg class="ico"><use href="#i-heart"/></svg>Отметить половой акт</button>
+      <button class="btn danger full" id="qEc"><svg class="ico"><use href="#i-pill"/></svg>Экстренная контрацепция</button>
+    </div>
+    <div class="hint" id="todayHint"></div>
+  </section>
+
+  <!-- Экран 2 -->
+  <section class="screen" id="screen-cal">
+    <header><h1>Календарь</h1><p>Нажми на день, затем выбери действие</p></header>
+    <div class="card">
+      <div class="month-nav">
+        <button id="prev">‹</button>
+        <div class="label" id="monthLabel"></div>
+        <button id="next">›</button>
+      </div>
+      <div class="weekdays">
+        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="legend">
+        <span><i style="background:var(--period)"></i>Менструация</span>
+        <span><i style="background:var(--ovulation)"></i>Овуляция</span>
+        <span><i style="background:var(--fertile);border:1px solid #f0c6d2"></i>Фертильные</span>
+        <span><i style="background:var(--sex)"></i>ПА</span>
+        <span><i style="background:var(--danger)"></i>Экстр. контрацепция</span>
+      </div>
+    </div>
+    <div class="quick">
+      <button class="btn primary" id="cStart"><svg class="ico"><use href="#i-drop"/></svg>Начались</button>
+      <button class="btn soft" id="cEnd"><svg class="ico"><use href="#i-check"/></svg>Закончились</button>
+      <button class="btn ghost full" id="cSex"><svg class="ico"><use href="#i-heart"/></svg>Отметить ПА</button>
+    </div>
+    <div class="hint" id="calHint"></div>
+  </section>
+
+  <!-- Экран 3 -->
+  <section class="screen" id="screen-stats">
+    <header><h1>Статистика</h1><p>Твой цикл в цифрах</p></header>
+    <div class="card">
+      <div class="stat-row"><span class="k">Средняя длина цикла</span><span class="v" id="sCycle">—</span></div>
+      <div class="stat-row"><span class="k">Средняя длительность месячных</span><span class="v" id="sPeriod">—</span></div>
+      <div class="stat-row"><span class="k">Циклов отмечено</span><span class="v" id="sCount">0</span></div>
+      <div class="stat-row"><span class="k">Следующая менструация</span><span class="v" id="sNext">—</span></div>
+      <div class="stat-row"><span class="k">Отметок ПА</span><span class="v" id="sSex">0</span></div>
+      <div class="stat-row"><span class="k">Экстренная контрацепция</span><span class="v" id="sEc">0</span></div>
+    </div>
+    <div class="card">
+      <div class="k" style="font-size:13px;color:var(--muted);margin-bottom:12px;">Длина последних циклов (дней)</div>
+      <div class="bars" id="bars"></div>
+      <div style="height:22px"></div>
+    </div>
+  </section>
+
+  <nav class="nav">
+    <button data-screen="today" class="active"><svg class="ico"><use href="#i-sun"/></svg>Сегодня</button>
+    <button data-screen="cal"><svg class="ico"><use href="#i-cal"/></svg>Календарь</button>
+    <button data-screen="stats"><svg class="ico"><use href="#i-stats"/></svg>Статистика</button>
+  </nav>
+</div>
+
+<!-- Модалка: Менструация -->
+<div class="overlay" id="mPeriod">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h2 id="periodTitle">Начало менструации</h2>
+    <div class="sub" id="periodDate"></div>
+
+    <div class="field">
+      <label>Цвет месячных</label>
+      <div class="colors" id="periodColors"></div>
+    </div>
+    <div class="field">
+      <label>Уровень боли</label>
+      <div class="slider-wrap">
+        <input type="range" min="1" max="5" value="1" id="painRange">
+        <span class="slider-val" id="painVal">1</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Настроение</label>
+      <div class="moods" id="periodMoods"></div>
+    </div>
+    <div class="field">
+      <label>Общее самочувствие</label>
+      <div class="slider-wrap">
+        <input type="range" min="1" max="5" value="3" id="wellRange">
+        <span class="slider-val" id="wellVal">3</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Заметка (необязательно)</label>
+      <textarea id="periodNote" rows="2" placeholder="Например: сильная слабость утром..."></textarea>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn ghost" data-close>Отмена</button>
+      <button class="btn primary" id="periodSave">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модалка: совет -->
+<div class="overlay" id="mAdvice">
+  <div class="sheet" style="text-align:center;padding-bottom:32px;">
+    <div class="handle"></div>
+    <div class="advice-ico" id="adviceIco"><svg class="ico"><use href="#i-info"/></svg></div>
+    <h2 id="adviceTitle" style="margin-top:6px;"></h2>
+    <div class="sub" id="adviceText" style="font-size:14px;line-height:1.6;margin-top:8px;"></div>
+    <div class="sheet-actions" style="grid-template-columns:1fr;margin-top:22px;">
+      <button class="btn primary" data-close>Хорошо</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модалка выбора ПА -->
+<div class="overlay" id="mSexChoice">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h2>В этот день уже есть ПА</h2>
+    <div class="sub" id="sexChoiceDate"></div>
+    <div class="choice-list">
+      <button class="choice-btn" id="sexAddMore">
+        <svg class="ico"><use href="#i-plus"/></svg>
+        <div><b>Добавить ещё один</b><span>Отметить ещё один половой акт в этот день</span></div>
+      </button>
+      <button class="choice-btn" id="sexRemoveLast">
+        <svg class="ico"><use href="#i-trash"/></svg>
+        <div><b>Отменить предыдущий</b><span id="sexRemoveHint"></span></div>
+      </button>
+      <button class="choice-btn" id="sexShowAll">
+        <svg class="ico"><use href="#i-heart"/></svg>
+        <div><b>Показать все за день</b><span id="sexCountHint"></span></div>
+      </button>
+    </div>
+    <div class="sheet-actions"><button class="btn ghost" data-close>Закрыть</button></div>
+  </div>
+</div>
+
+<!-- Модалка: список ПА -->
+<div class="overlay" id="mSexList">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h2>Записи ПА за день</h2>
+    <div class="sub" id="sexListDate"></div>
+    <div id="sexListBody"></div>
+    <div class="sheet-actions"><button class="btn ghost" data-close>Закрыть</button></div>
+  </div>
+</div>
+
+<!-- Модалка: ПА -->
+<div class="overlay" id="mSex">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h2>Половой акт</h2>
+    <div class="sub" id="sexDate"></div>
+
+    <div class="field">
+      <div class="toggle-row">
+        <span class="t-label"><svg class="ico"><use href="#i-shield"/></svg> Защищённый</span>
+        <div class="switch" id="protectedSwitch"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Что было</label>
+      <div class="chips" id="sexPractices"></div>
+    </div>
+    <div class="field">
+      <label>Уровень желания</label>
+      <div class="slider-wrap">
+        <input type="range" min="1" max="5" value="3" id="desireRange">
+        <span class="slider-val" id="desireVal">3</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Оценка полового акта</label>
+      <div class="slider-wrap">
+        <input type="range" min="1" max="5" value="3" id="rateRange">
+        <span class="slider-val" id="rateVal">3</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Заметка (необязательно)</label>
+      <textarea id="sexNote" rows="2" placeholder="Любые детали..."></textarea>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn ghost" data-close>Отмена</button>
+      <button class="btn primary" id="sexSave">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- Модалка: Экстренная контрацепция -->
+<div class="overlay" id="mEc">
+  <div class="sheet">
+    <div class="handle"></div>
+    <h2>Экстренная контрацепция</h2>
+    <div class="sub" id="ecDate"></div>
+    <div class="field" style="background:#FFF0F3;border-radius:16px;padding:14px;font-size:13px;line-height:1.5;color:var(--muted)">
+      Будет отмечена дата приёма. Напоминание: препараты экстренной контрацепции эффективны в первые 72 часа и не заменяют регулярную контрацепцию.
+    </div>
+    <div class="sheet-actions">
+      <button class="btn ghost" data-close>Отмена</button>
+      <button class="btn danger" id="ecSave">Отметить</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* =========================================================
    Утилиты
@@ -864,7 +858,7 @@ function haptic(type = 'light') {
 }
 
 /* =========================================================
-   Контент: комплименты, факты, советы
+   Контент
    ========================================================= */
 const COMPLIMENTS = [
   'Сегодня вы выглядите особенно хорошо.',
@@ -925,7 +919,7 @@ function showCompliment(){
 document.getElementById('complimentCard').addEventListener('click', showCompliment);
 
 /* =========================================================
-   Состояние
+   Состояние + Облако
    ========================================================= */
 const STORAGE_KEY = 'my_cycle_v5';
 
@@ -942,19 +936,18 @@ function save(){
   const data = JSON.stringify({
     periods: state.periods, sex: state.sex, ec: state.ec
   });
-  // 1. Сохраняем локально (для браузера)
+  
   localStorage.setItem(STORAGE_KEY, data);
   
-  // 2. Сохраняем в облако Telegram (если открыто в ТГ)
   if (window.Telegram?.WebApp?.CloudStorage) {
-    Telegram.WebApp.CloudStorage.setItem(STORAGE_KEY, data, (err) => {
+    const compressed = btoa(unescape(encodeURIComponent(data)));
+    Telegram.WebApp.CloudStorage.setItem(STORAGE_KEY, compressed, (err) => {
       if (err) console.warn('Ошибка облака ТГ:', err);
     });
   }
 }
 
 function load(){
-  // Пытаемся загрузить локально
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -962,31 +955,16 @@ function load(){
       state.periods = d.periods || [];
       state.sex = d.sex || [];
       state.ec = d.ec || [];
-      // Если открыто в ТГ, попробуем взять из облака (если там новее)
-      if (window.Telegram?.WebApp?.CloudStorage) {
-        Telegram.WebApp.CloudStorage.getItem(STORAGE_KEY, (err, cloudData) => {
-          if (!err && cloudData && cloudData !== raw) {
-            try {
-              const cd = JSON.parse(cloudData);
-              state.periods = cd.periods || [];
-              state.sex = cd.sex || [];
-              state.ec = cd.ec || [];
-              save(); // синхронизируем локальное с облаком
-              refreshAll();
-            } catch(e){}
-          }
-        });
-      }
       return true;
     }
   } catch(e){}
   
-  // Если локально пусто, пытаемся взять из облака
   if (window.Telegram?.WebApp?.CloudStorage) {
     Telegram.WebApp.CloudStorage.getItem(STORAGE_KEY, (err, cloudData) => {
       if (!err && cloudData) {
         try {
-          const cd = JSON.parse(cloudData);
+          const decoded = decodeURIComponent(escape(atob(cloudData)));
+          const cd = JSON.parse(decoded);
           state.periods = cd.periods || [];
           state.sex = cd.sex || [];
           state.ec = cd.ec || [];
@@ -998,7 +976,6 @@ function load(){
   }
   return false;
 }
-
 
 /* =========================================================
    Прогноз
@@ -1091,14 +1068,12 @@ function renderCalendar(){
     el.className='day appear';
     el.textContent = d;
 
-    // период
     let isActualPeriod = false;
     for (const p of state.periods){
       const end = p.end || today;
       if (key >= p.start && key <= end){ el.classList.add('period'); isActualPeriod = true; break; }
     }
 
-    // прогноз (будущие даты)
     if (!isActualPeriod && f) {
       const nextStartK = iso(f.next);
       const nextEndK = iso(new Date(f.next.getTime() + (avgPeriod()-1)*86400000));
@@ -1111,12 +1086,6 @@ function renderCalendar(){
       }
     }
 
-    // реальная овуляция/фертильные в текущем цикле (не перекрываем прогнозом)
-    if (!isActualPeriod && f && !el.classList.contains('period-forecast') && !el.classList.contains('ovulation-forecast') && !el.classList.contains('fertile-forecast')) {
-      // реальные не считаем отдельно — только прогнозные для будущего
-    }
-
-    // ПА (сердечки)
     const sexOnDay = sexRecordsByDate(key);
     if (sexOnDay.length){
       el.classList.add('sex');
@@ -1146,7 +1115,6 @@ function renderCalendar(){
     if (key===today) el.classList.add('today');
     if (key===state.selected) el.classList.add('selected');
 
-    // Клик — только меняем выделение, без пересоздания DOM
     el.onclick = () => {
       document.querySelectorAll('#grid .day.selected').forEach(x=>x.classList.remove('selected'));
       el.classList.add('selected');
@@ -1204,7 +1172,7 @@ function renderStats(){
 }
 
 /* =========================================================
-   Модалки: общие
+   Модалки
    ========================================================= */
 function openOverlay(id){ document.getElementById(id).classList.add('open'); haptic('light'); }
 function closeOverlay(id){ document.getElementById(id).classList.remove('open'); }
@@ -1233,7 +1201,7 @@ function confetti(){
 }
 
 /* =========================================================
-   Совет / комплимент после сохранения месячных
+   Совет
    ========================================================= */
 function showAdvice(meta){
   const isBad = (meta.pain >= 4) || (meta.mood <= 1) || (meta.well <= 2) || (meta.color === 'brown') || (meta.color === 'dark');
@@ -1599,6 +1567,7 @@ function refreshAll(){
 /* =========================================================
    Инициализация
    ========================================================= */
+load(); // Загружаем данные из памяти/облака
 buildPeriodStaticUI();
 buildSexStaticUI();
 refreshAll();
